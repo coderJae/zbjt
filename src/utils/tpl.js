@@ -9,7 +9,7 @@ function mecInfoWindow(title) {
        padding:30px 20px;
        color:#fff;
        font-size:16px;
-       background:url(${require('../assets/mec.png')}) no-repeat center center;
+       background:url(${require('../assets/img/mec.png')}) no-repeat center center;
        background-size:100% 100%;
        position:relative;
     `
@@ -19,7 +19,7 @@ function mecInfoWindow(title) {
        position:absolute;
        right:-15px;
        top:-15px;
-       background:url(${require('../assets/close.png')}) no-repeat center center;
+       background:url(${require('../assets/img/close.png')}) no-repeat center center;
        background-size:100% 100%;
     `
 
