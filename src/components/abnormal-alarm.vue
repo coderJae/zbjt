@@ -264,10 +264,7 @@
 <script>
 import ProTable from './pro-table'
 import CircleProgress from './circle-progress'
-
-var echarts = require('echarts/lib/echarts');
-// 引入提示框和标题组件
-require("echarts/lib/chart/pie");
+import { echarts } from '../utils/echarts'
 
 export default {
     name:'AbnormalAlarm',

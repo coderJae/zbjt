@@ -296,7 +296,7 @@
 <script>
 import ProTable from './pro-table'
 import CircleProgress from './circle-progress'
-import { echarts } from './echarts'
+import { echarts } from '../utils/echarts'
 
 export default {
     name:'TrafficEvents',

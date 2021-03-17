@@ -80,7 +80,7 @@
                         </div>
                     </div>
                     <div class="circle">
-                        <circle-progress :indict="item.speed"/>
+                        <circle-progress :indict="item.speed" :pn="item.pn"/>
                     </div>
                     <div class="hblocks">
                         <div class="b1"></div>
@@ -128,7 +128,7 @@
 <script>
 import ProTable from './pro-table'
 import CircleProgress from './circle-progress'
-import { echarts } from './echarts'
+import { echarts } from '../utils/echarts'
 
 export default {
     name:'TrafficWorking',
@@ -198,27 +198,32 @@ export default {
               {
                   start:'KS25+300',
                   end:'KS32+102',
-                  speed:86
+                  speed:86,
+                  pn:203
               },
               {
                   start:'KS40+210',
                   end:'KS55+140',
-                  speed:78
+                  speed:78,
+                  pn:40
               },
               {
                   start:'KS58+200',
                   end:'KS68+320',
-                  speed:83
+                  speed:83,
+                  pn:126
               },
               {
                   start:'KX17+220',
                   end:'KX37+180',
-                  speed:80
+                  speed:80,
+                  pn:90
               },
               {
                   start:'KX42+210',
                   end:'KX70+190',
-                  speed:79
+                  speed:79,
+                  pn:228
               }
           ],
           qjllData:[

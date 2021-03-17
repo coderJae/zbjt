@@ -41,8 +41,8 @@
                 <div class="cancel">忽略</div>
             </div>
           </div>
-          <component :is="siderBar"></component>
           <!-- right -->
+          <component :is="siderBar"></component>
           <!--  -->
           <div class="events">
                 <div class="theme">
@@ -74,10 +74,12 @@
 <script>
 // @ is an alias to /src
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
-import { renderMask, addMarker }  from '@/utils/util'
-import { MecComponent } from '@/utils/comp'
+import { renderMask, addMarker, drawWave, searchRoad, drawRoad }  from '@/utils/util'
+import {  TrafficEventsComponent, RoadDeviceComponent, HitchComponent } from '@/utils/comp'
 
 var customLayer = null
+var mecLayer = null
+var waveLayers = []
 
 export default {
   name: 'Map',
@@ -95,10 +97,10 @@ export default {
           siderBar:'TrafficWorking',
           overlayGroups:null,
           canDraw:false, 
-          list:[],
           onIndex:0,
           cardIndex:0,
           eventShow:false,
+          components:['TrafficWorking','TrafficEvents','AbnormalAlarm','CarNetwork'],
           card:[
             [
                 {
@@ -190,6 +192,36 @@ export default {
             u2:'万车次',
             i2:'wl.png'
           }],
+          lines:[
+            {  
+              id:'KS-001',
+              start:[117.180299,36.62761],
+              end:[117.204428,36.803643],
+              status:0,
+              index:1
+            },
+            { 
+              id:'KS-002',
+              start:[117.210685,36.711597],
+              end:[117.211638,36.722092],
+              status:1,
+              index:999
+            },
+            { 
+              id:'KS-003',
+              start:[117.211638,36.690577],
+              end:[117.210093,36.702001],
+              status:2,
+              index:999
+            },
+            { 
+              id:'KS-004',
+              start:[117.212128,36.673128],
+              end:[117.212668,36.683143],
+              status:1,
+              index:999
+            }
+          ],
           mecData:[
             {
                 time:'2020年10月23日 17:32:12',
@@ -197,14 +229,124 @@ export default {
                 code:'SP1002',
                 lnglat:'117.212067,36.673145',
                 question:'天线无采集数据',
-                id:'001'
+                id:0
             },{
                 time:'2020年10月24日 17:32:12',
                 type:'雷视检测器2',
                 code:'SP1003',
                 lnglat:'117.212068,36.673145',
                 question:'离线',
-                id:'002'
+                id:1
+          }],
+          trafficEventsData:[
+            { 
+              name:'001',
+              lnglat:[117.203398,36.791134],
+              status:0,
+              img:'sbgz',
+              component:null
+            },{ 
+              name:'001',
+              lnglat:[117.209406,36.733925],
+              status:0,
+              img:'jtsg',
+              component:null
+            },{ 
+              name:'001',
+              lnglat:[117.210093,36.702001],
+              status:0,
+              img:'jtsg',
+              component:null
+            },{ 
+              name:'001',
+              lnglat:[117.210093,36.666226],
+              status:0,
+              img:'jtsg',
+              component:null
+            },{ 
+              name:'001',
+              lnglat:[117.194815,36.639509],
+              status:0,
+              img:'jtsg',
+              component:null
+            }
+          ],
+          abnormalAlarmData:[{
+                status:'normal',
+                id:'001',
+                lnglat:[117.204428,36.803643]
+            },{
+                status:'normal',
+                id:'002',
+                lnglat:[117.203398,36.791134]
+            },{
+                status:'normal',
+                id:'003',
+                lnglat:[117.204428,36.780823]
+            },{
+                status:'normal',
+                id:'004',
+                lnglat:[117.199965,36.768998]
+            },{
+                status:'fault',
+                id:'005',
+                lnglat:[117.202368,36.756621]
+            },{
+                status:'normal',
+                id:'006',
+                lnglat:[117.207003,36.74493]
+            },{
+                status:'normal',
+                id:'007',
+                lnglat:[117.209406,36.733925]
+            },{
+                status:'normal',
+                id:'008',
+                lnglat:[117.211638,36.722092]
+            },{
+                status:'normal',
+                id:'009',
+                lnglat:[117.210265,36.71163]
+            },{
+                status:'normal',
+                id:'010',
+                lnglat:[117.211638,36.690577]
+            },{
+                status:'normal',
+                id:'011',
+                lnglat:[117.212668,36.683143]
+            },{
+                status:'fault',
+                id:'012',
+                lnglat:[117.212067,36.673145]
+            },{
+                status:'normal',
+                id:'013',
+                lnglat:[117.210093,36.666226]
+            },{
+                status:'normal',
+                id:'014',
+                lnglat:[117.207003,36.658446]
+            },{
+                status:'normal',
+                id:'015',
+                lnglat:[117.204342,36.651767]
+            },{
+                status:'normal',
+                id:'016',
+                lnglat:[117.19945,36.644674]
+            },{
+                status:'normal',
+                id:'017',
+                lnglat:[117.194815,36.639509]
+            },{
+                status:'normal',
+                id:'018',
+                lnglat:[117.188378,36.633448]
+            },{
+                status:'normal',
+                id:'019',
+                lnglat:[117.180299,36.62761]
           }]
       }
   },
@@ -212,41 +354,124 @@ export default {
     pickThis(index){
         this.onIndex = index
         this.siderBar = this.components[index]
-        this.map.remove(this.layers)
         this.map.clearMap()
+        this.map.remove(waveLayers)
+
+
+        switch(index) {
+           case 0:
+             this.trafficWorking()
+             break;
+           case 1:
+             this.trafficEvents()
+             break;
+          case  2:
+            this.abnormalAlarm()
+           default:
+             break;
+        }
+
+    },
+    /*交通运行*/
+    trafficWorking(){
+        this.lines.forEach(r => {
+            searchRoad(r).then(res=>{
+                  drawRoad(this.map,res)
+            }).catch(err=>{
+                  console.log(err)
+            })
+        })
+    },
+    /*交通事件*/
+    trafficEvents(){
+        this.trafficEventsData.forEach( d => {
+           drawWave(d.lnglat,this.map,waveLayers)
+        })
+        customLayer = new AMap.OverlayGroup(addMarker(this.map,this.trafficEventsData,-95));
+        this.map.add(customLayer)
+    },
+    /*路测设备*/
+    abnormalAlarm(){
+        mecLayer = new AMap.OverlayGroup(addMarker(this.map,this.abnormalAlarmData,-35,'bottom-left'));
+        this.map.add(mecLayer)
+    },
+    /*服务场景*/
+    carNetwork(){
+      
+    },
+    initMouseTool(){
+        this.canDraw = !this.canDraw
+        if(!this.canDraw){
+           this.mouseTool.close(true)
+           return
+        }
+        this.mouseTool = new AMap.MouseTool(this.map); 
+        //监听draw事件可获取画好的覆盖物
+        var overlays = [];
+        this.mouseTool.on('draw',(e) => {
+            let paths = []
+
+            e.obj.getPath().forEach(p => {
+                 paths.push([p.lng,p.lat])
+            })
+            
+           console.log(AMap.GeometryUtil.isPointInRing([116.39573,39.907622],paths))
+
+            overlays.push(e.obj);
+            setTimeout(()=>{
+                this.map.remove(overlays)
+                overlays = [];
+            },1000)
+        }) 
+        let _this = this
+        function draw(type){
+            switch(type){
+              case 'polygon':{
+                  _this.mouseTool.polygon({
+                    fillColor:'rgba(0,0,0,0)',
+                    strokeColor:'#80d8ff'
+                    //同Polygon的Option设置
+                  });
+                  break;
+              }
+              case 'rectangle':{
+                  _this.mouseTool.rectangle({
+                    fillColor:'rgba(0,0,0,0)',
+                    strokeColor:'red',
+                    strokeWeight:6
+                    //同Polygon的Option设置
+                  });
+                  break;
+              }
+            }
+       }
+       draw('rectangle')
     }
   },
   created(){
-     let mec = MecComponent(this,this.mecData)
+     //交通运行
+     
 
-     this.list = [
-        {
-          id:'001',
-          lnglat:[116.398342,39.908465],
-          status:0,
-          img:'',
-          component:mec
-        },
-        {
-          id:'002',
-          lnglat:[116.398342,39.908465],
-          status:1,
-          img:'',
-          component:mec
-        },
-        {
-          id:'003',
-          lnglat:[116.443936,39.91565],
-          status:1,
-          img:'',
-          component:mec
-        }
-     ]
+     //交通事件
+     let tec = TrafficEventsComponent(this)
+      
+     this.trafficEventsData.forEach( d => {
+        d.component = tec
+     })
+
+    //路测设备
+     let hitch = HitchComponent(this,this.mecData)
+     let mec   = RoadDeviceComponent(this,hitch)
+     
+     this.abnormalAlarmData.forEach( (d,i) => {
+        d.component = mec
+        d.img = d.status == 'normal' ? 'mec_normal' : 'mec_error'
+     })
      
   },
   mounted(){
-      lazyAMapApiLoaderInstance.load().then(() => {
-         this.map = new AMap.Map("map", {
+         lazyAMapApiLoaderInstance.load().then(() => {
+            this.map = new AMap.Map("map", {
             center: [116.398342,39.908465],
             zoom: 12,
             pitch: 50,
@@ -256,26 +481,18 @@ export default {
 
         
         
-        customLayer = new AMap.CustomLayer(renderMask('map'), {
-              zooms: [3, 18],
-              zIndex: 0
-        })
+        // customLayer = new AMap.CustomLayer(renderMask('map'), {
+        //       zooms: [3, 18],
+        //       zIndex: 0
+        // })
 
-        customLayer.setMap(this.map)
+        // customLayer.setMap(this.map)
          
-        window.onresize = () => {
-            customLayer.setMap(null)
-            customLayer.setMap(this.map)
-        }
-
-
-        
-
-
-
-         this.overlayGroups = new AMap.OverlayGroup(addMarker(this.map,this.list,this));
-         this.map.add(this.overlayGroups);
-        
+        // window.onresize = () => {
+        //     customLayer.setMap(null)
+        //     customLayer.setMap(this.map)
+        // }
+        this.trafficWorking()
       })
   }
 }
@@ -388,7 +605,6 @@ export default {
       background:rgba(0,0,0,0.8);
       color:#fff;
       text-align: center;
-      font-size:10px;
       background:linear-gradient(-135deg,transparent 24px, rgba(0,0,0,0.6) 0) bottom right,;
       background-repeat: no-repeat;
       display:flex;
@@ -402,8 +618,8 @@ export default {
         background-size:100% 100%;
         cursor: pointer;
         pointer-events:auto;
-        font-size:16px;
-        letter-spacing:1px;
+        font-size:24px;
+        letter-spacing:2px;
         margin:11px auto;
         &.act{
           background:url(~@/assets/img/card_bg_act.png) no-repeat center center;
@@ -413,7 +629,7 @@ export default {
           width:98px;
           height:98px;
           margin:0 auto;
-          margin:15px auto 5px auto;
+          margin:10px auto 5px auto;
         }
         .yd{
           background:url(~@/assets/img/yd.png) no-repeat center center;

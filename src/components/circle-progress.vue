@@ -12,6 +12,7 @@
                 fill="none"
                 stroke="#f7b500"
                 class="my-svg-path"
+                :style="{ 'stroke-dashoffset':pn}"
                 transform="rotate(90,50,50)"
                 stroke-width="10">
             </path>
@@ -39,16 +40,16 @@
     }
 }
 .my-svg-path{
-    stroke-dasharray: 252.2px, 252.2px;
-    stroke-dashoffset: 230;
+    stroke-dasharray: 251.2px, 251.2px;
     transition: stroke-dashoffset 0.6s ease 0s, stroke 0.6s ease 0s;
-    transform: rotateZ(90deg);
+    transform: rotate3d(20,20,0,180deg);
     transform-origin: 50% 50%;
+
 }
 </style>
 <script>
 export default {
     name:'CircleProgress',
-    props:['indict']
+    props:['indict','pn']
 }
 </script>
