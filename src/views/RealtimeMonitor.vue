@@ -206,6 +206,286 @@
                 </div>
             </div>
         </div>
+        <div class="modal" v-if="onIndex !== -1">
+            <div class="item" v-if="onIndex == 0">
+               <div class="content">
+                    <div class="title">
+                      <span style="color:#f7b500;margin-right:20px">◀</span>MEC详情
+                      <div class="close" @click="onIndex = -1"></div>
+                    </div>
+                    <div class="ul">
+                        <div class="topic">设备信息</div>
+                        <div class="li">
+                            <div class="label">设备IP</div>
+                            <div class="td">192.168.1.255</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备类型</div>
+                            <div class="td">节点MEC</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备厂商</div>
+                            <div class="td">兆边科技</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备型号</div>
+                            <div class="td">ZBMEC2.0</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备地点</div>
+                            <div class="td">121.111,31.111</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备位置</div>
+                            <div class="td">上行路侧抱杆</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">管辖范围</div>
+                            <div class="td">KS15+669 - KS16+798,KS15+689 - KS16+798</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">在线情况</div>
+                            <div class="td">正常</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">时间设置</div>
+                            <div class="td">当前时间：2020.12.29 17:21:21</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备状态</div>
+                            <div class="td">CPU使用率：50% CPU温度：50℃ 内存使用率：60% GPU使用率：32%</div>
+                        </div>
+                        <div class="topic">设备管理</div>
+                        <div style="display:flex;justify-content:space-between">
+                            <div class="check-box">
+                                <div class="checkbox on">
+                                    <div class="check"></div>
+                                    暴雨
+                                </div>
+                                <div class="checkbox">
+                                    <div class="check"></div>
+                                    浓雾
+                                </div>
+                                <div class="checkbox">
+                                    <div class="check"></div>
+                                    起火
+                                </div>
+                                <div class="checkbox">
+                                    <div class="check"></div>
+                                    冰雹
+                                </div>
+                                <div class="checkbox">
+                                    <div class="check"></div>
+                                    塌陷
+                                </div>
+                                <div class="checkbox">
+                                    <div class="check"></div>
+                                    施工
+                                </div>
+                            </div>
+                            <div class="push">下发场景</div>
+                        </div>
+                        
+                    </div>
+               </div>
+            </div>
+            <div class="item" v-if="onIndex == 1">
+               <div class="content">
+                    <div class="title">
+                        <span style="color:#f7b500;margin-right:20px">◀</span>VMS详情
+                        <div class="close" @click="onIndex = -1"></div>
+                    </div>
+                    <div class="ul">
+                        <div class="topic">设备信息</div>
+                        <div class="li">
+                            <div class="label">设备IP</div>
+                            <div class="td">192.168.1.255</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备类型</div>
+                            <div class="td">全彩A板</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备厂商</div>
+                            <div class="td">兆边科技</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备型号</div>
+                            <div class="td">ZBMEC2.0</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备地点</div>
+                            <div class="td">121.111,31.111</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备位置</div>
+                            <div class="td">上行路侧抱杆</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">覆盖车道</div>
+                            <div class="td">4</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">在线情况</div>
+                            <div class="td">正常</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">时间设置</div>
+                            <div class="td">当前时间：2020.12.29 17:21:21</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备状态</div>
+                            <div class="td">CPU使用率：50% CPU温度：50℃ 内存使用率：60% 环境亮度：2</div>
+                        </div>
+                        <div class="topic">设备管理 <div class="reset">↶ 还原发布信息</div></div>
+                         <div class="li">
+                            <div class="label">车道功能</div>
+                            <div class="td y" v-for="(item,index) in laneFun" :key="index">{{item.lane}}
+                                <div class="select-box">
+                                    <span>▲</span>
+                                    <div class="select">
+                                        <div class="option" v-for="(itm,ind) in lanes" :key="ind" @click="pickSelect(item,'lane',itm)">{{itm}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="li">
+                            <div class="label">最高限速</div>
+                            <div class="td o"  v-for="(item,index) in highLit" :key="index">{{item.speed}}
+                                <div class="select-box">
+                                    <span>▲</span>
+                                     <div class="select">
+                                        <div class="option" v-for="(itm,ind) in highLimit" :key="ind" @click="pickSelect(item,'speed',itm)">{{itm}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="td">——</div> -->
+                        </div>
+                         <div class="li">
+                            <div class="label">最低限速</div>
+                            <div class="td g"  v-for="(item,index) in lowLit" :key="index">{{item.speed}}
+                                <div class="select-box">
+                                    <span>▲</span>
+                                     <div class="select">
+                                        <div class="option" v-for="(itm,ind) in lowLimit" :key="ind" @click="pickSelect(item,'speed',itm)">{{itm}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="li">
+                            <div class="label">车道开闭</div>
+                            <div class="td b"  v-for="(item,index) in LaneCrl" :key="index">{{item.action}}
+                              <div class="select-box">
+                                <span>▲</span>
+                                    <div class="select">
+                                    <div class="option" v-for="(itm,ind) in controls" :key="ind" @click="pickSelect(item,'action',itm)">{{itm}}</div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                         <div class="li">
+                            <div class="label">提示标语</div>
+                            <div class="td tips"><input type="text" v-model="tips"/></div>
+                        </div>
+                        <div class="pub">发布信息</div>
+                    </div>
+               </div>
+            </div>
+            <div class="item" v-if="onIndex == 2">
+               <div class="content">
+                    <div class="title">
+                        <span style="color:#f7b500;margin-right:20px">◀</span>雷视详情
+                        <div class="close" @click="onIndex = -1"></div>
+                    </div>
+                    <div class="ul">
+                        <div class="topic">设备信息</div>
+                        <div class="li">
+                            <div class="label">设备IP</div>
+                            <div class="td">192.168.1.255</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备类型</div>
+                            <div class="td">雷视一体机</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备厂商</div>
+                            <div class="td">兆边科技</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备型号</div>
+                            <div class="td">ZBVR2.0</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备地点</div>
+                            <div class="td">121.111,31.111</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备位置</div>
+                            <div class="td">上行龙门架</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">管辖范围</div>
+                            <div class="td">400m</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">在线情况</div>
+                            <div class="td">正常</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">时间设置</div>
+                            <div class="td">当前时间：2020.12.29 17:21:21 所属时区：GMT +8</div>
+                        </div>                   
+                    </div>
+               </div>
+            </div>
+            <div class="item" v-if="onIndex == 3">
+               <div class="content">
+                    <div class="title">
+                        <span style="color:#f7b500;margin-right:20px">◀</span>RSU详情
+                        <div class="close" @click="onIndex = -1"></div>
+                    </div>
+                    <div class="ul">
+                        <div class="topic">设备信息</div>
+                        <div class="li">
+                            <div class="label">设备IP</div>
+                            <div class="td">192.168.1.255</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备类型</div>
+                            <div class="td">4G</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备厂商</div>
+                            <div class="td">兆边科技</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备型号</div>
+                            <div class="td">ZBRSU2.0</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备地点</div>
+                            <div class="td">121.111,31.111</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">设备位置</div>
+                            <div class="td">上行龙门架</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">覆盖范围</div>
+                            <div class="td">400m</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">在线情况</div>
+                            <div class="td">正常</div>
+                        </div>
+                        <div class="li">
+                            <div class="label">时间设置</div>
+                            <div class="td">当前时间：2020.12.29 17:21:21 所属时区：GMT +8</div>
+                        </div>                   
+                    </div>
+               </div>
+            </div>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -647,12 +927,186 @@
            }
         }
      }
+     .modal{
+         position: fixed;
+         top:0;
+         left:0;
+         right:0;
+         bottom:0;
+         z-index:999999;
+         background:rgba(0,0,0,0.6);
+         color:#fff;
+         text-align:left;
+         .item{
+             width:2538px;
+             position: inherit;
+             top:50%;
+             left:50%;
+             transform:translate(-50%,-50%);
+             background:url(~@/assets/img/modal_bg.png) no-repeat center center;
+             background-size:100% 100%;
+             .content{
+                 width:2268px;
+                 margin:145px 0 180px 130px;
+                 border:1px solid #5c5e63;
+                 padding-bottom:50px;
+                 .title{
+                     height:118px;
+                     font-size:40px;
+                     line-height:118px;
+                     background:#5c5e63;
+                     letter-spacing:5px;
+                     text-indent:70px;
+                     .close{
+                         float:right;
+                         width:118px;
+                         height:118px;
+                         background:url(~@/assets/img/close_bg.png) no-repeat center center;
+                         background-size:100% 100%;
+                     }
+                 }
+                 .ul{
+                     padding:0 68px;
+                     font-size:26px;
+                     .topic{
+                         height:112px;
+                         line-height:112px;
+                         font-size:32px;
+                         letter-spacing:3px;
+                         .reset{
+                             float:right;
+                             width:360px;
+                             height:60px;
+                             background:#019e8b;
+                             margin-top:30px;
+                             border-radius:30px;
+                             text-align:center;
+                             line-height:60px;
+                         }
+                     }
+                     .li{
+                         height:72px;
+                         line-height:72px;
+                         display:flex;
+                         border:1px solid #fff;
+                         .label{
+                             width:490px;
+                             text-align:center;
+                             letter-spacing:2px;
+                             border-right:1px solid #fff;
+                             background:rgba(255,255,255,0.2);
+                         }
+                         .td{
+                             flex:1;
+                             text-indent:30px;
+                             text-align:center;
+                             border-right:1px solid #fff;
+                             &.tips{
+                                text-indent:0;
+                                input{
+                                    border:none;
+                                    height:100%;
+                                    width:100%;
+                                    background:rgba(0,0,0,0);
+                                    text-indent:15px;
+                                    color:#03e479;
+                                    letter-spacing:2px;
+                                    outline:none;
+                                }
+                             }
+                             &:last-child{
+                                border-right: none;
+                             }
+                             &.y{
+                                 color:#f7b500;
+                             }
+                             &.o{
+                                 color:#fa6400;
+                             }
+                             &.g{
+                                 color:#6dd400;
+                             }
+                             &.b{
+                                 color:#4effeb;
+                             }
+                             .select-box{
+                                 width:70px;
+                                 height:70px;
+                                 background:#67bdff;
+                                 float:right;
+                                 text-align:center;
+                                 color:#fff;
+                                 text-indent:3px;
+                                 position:relative;
+                                 span{
+                                     display:block;
+                                     height:100%;
+                                     transition:all .3s;
+                                 }
+                                 .select{
+                                     width:200px;
+                                     z-index:999;
+                                     position:absolute;
+                                     display:none;
+                                     cursor: default;
+                                     .option{
+                                         height:60px;
+                                         line-height:60px;
+                                         background:#67bdff;
+                                         border-bottom:1px solid #fff;
+                                         cursor: pointer;
+                                         &:hover{
+                                            background:#32c5ff;
+                                         }
+                                         &:last-child{
+                                             border-bottom:none;
+                                         }
+                                     }
+                                 }
+                                 &:hover{
+                                     .select{
+                                        display: block;
+                                     }
+                                     span{
+                                         transform:rotate(180deg);
+                                     }
+                                 }
+                             }
+                         }
+                     }
+                     .check-box{
+                         .checkbox{
+                             width:33%;
+                             font-size:26px;
+                             margin-bottom:30px;
+                         }
+                     }
+                     .pub,.push{
+                         height:118px;
+                         width:337px;
+                         line-height:118px;
+                         text-align:center;
+                         margin:38px 0 0 1795px;
+                         background:#32c5ff;
+                         font-size:50px;
+                         font-weight:bold;
+                         letter-spacing:5px;
+                     }
+                     .push{
+                         margin:0;
+                     }
+                 }
+             }
+         }
+     }
 }
 </style>
 <script>
 import HeaderBar from '../components/header'
 import { echarts } from '../utils/echarts'
 
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 
 export default {
     components:{
@@ -661,18 +1115,106 @@ export default {
     name:'RealtimeMonitor',
     data(){
         return {
-            onIndex:0,
+            onIndex:-1,
             cardList:[
                 'MEC','VSM','视频','雷达'
-            ]
+            ],
+            lanes:['客车','小客车','货车专用','紧急停车带'],
+            highLimit:[80,100,120],
+            lowLimit:[60,80],
+            controls:['↓ 开放','↙ 向左变道','↘ 向右变道','× 关闭'],
+            tips:'前方拥堵请注意减速慢行',
+            laneFun:[{
+                lane:'客车'
+            },{
+                lane:'小客车'
+            },{
+                lane:'货车专用'
+            },{
+                lane:'紧急停车带'
+            }],
+            highLit:[{
+                speed:'120'
+            },{
+                speed:'120'
+            },{
+                speed:'80'
+            },{
+                speed:' ——'
+            }],
+            lowLit:[{
+                speed:'80'
+            },{
+                speed:'80'
+            },{
+                speed:'60'
+            },{
+                speed:' ——'
+            }],
+            LaneCrl:[{
+              action:'↓ 开放'
+            },{
+              action:'↙ 向左变道'
+            },{
+              action:'↘ 向右变道'
+            },{
+              action:'× 关闭'
+            }]
         }
     },
     methods:{
        pickThis(index){
            this.onIndex = index
-       }
+       },
+       pickSelect(item,k,itm){
+         item[k] = itm
+       },
+       initWebSocket () {
+                this.connection()
+                const self = this
+                // 断开重连机制,尝试发送消息,捕获异常发生时重连
+                this.timer = setInterval(() => {
+                    try {
+                    self.stompClient.send('test')
+                    } catch (err) {
+                    console.log('断线了: ' + err)
+                    self.connection()
+                    }
+                }, 10000)
+            },
+            connection () {
+        // 建立连接对象
+        this.socket = new SockJS('/endpointChat?token=admin')// 连接服务端提供的通信接口，连接以后才可以订阅广播消息和个人消息
+        // 获取STOMP子协议的客户端对象
+        this.stompClient = Stomp.over(this.socket)
+        // 定义客户端的认证信息,按需求配置
+        var headers = {
+            login: 'guest',
+            passcode: 'guest'
+        }
+        // 向服务器发起websocket连接
+        this.stompClient.connect(headers, (frame) => {
+            // this.stompClient.subscribe('/user/queue/notifications', (msg) => { // 订阅服务端提供的某个topic
+            //     console.log('11111')
+            //     console.log(msg) // msg.body存放的是服务端发送给我们的信息
+            // })
+            this.stompClient.subscribe('/topic/getResponse', (msg) => { // 订阅服务端提供的某个topic
+            console.log('3333333')
+            console.log(JSON.parse(msg.body)) // msg.body存放的是服务端发送给我们的信息
+            })
+        }, (err) => {
+
+        })
+        },
+        disconnect () {
+        if (this.stompClient != null) {
+            this.stompClient.disconnect()
+            console.log('Disconnected')
+        }
+        }
     },
     mounted(){
+        // this.initWebSocket()
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('zbqs'));
         var option = {

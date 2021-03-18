@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { mecInfoWindow, trafficEventsWindow, roadDeviceWindow } from './tpl'
+import { mecInfoWindow, trafficEventsWindow, roadDeviceWindow, pubSceneWindow } from './tpl'
 
 /* 独立组件 突出一个动态*/
 
@@ -121,9 +121,82 @@ function HitchComponent(vue,list){
 }
 
 
+//场景下发
+function pubSceneComponent(vue,list){
+  var Component = Vue.extend({
+      template:pubSceneWindow('基本信息'),
+      data(){
+        return {
+          step:1,
+          mecList:list,
+          checkList:[],
+          w:[
+            {
+              name:'暴雨',
+              checked:false
+            },
+            {
+              name:'浓雾',
+              checked:false
+            },
+            {
+              name:'起火',
+              checked:false
+            },
+            {
+              name:'冰雹',
+              checked:false
+            },
+            {
+              name:'塌陷',
+              checked:false
+            },
+            {
+              name:'施工',
+              checked:false
+            }
+          ]
+        }
+      },
+      watch: {
+        mecList:{
+          handler(){
+              let list = []
+              this.mecList.forEach(m => {
+                if( m.checked ){
+                    list.push(m.name)
+                }
+              })
+              this.checkList = list
+          },
+          deep:true,
+          immediate: true
+        }
+      },
+      methods:{
+        check:function(item){
+          item.checked = !item.checked
+        },
+        closeWindow(type){
+          vue.map.clearInfoWindow();
+          if(type){
+            this.$message.success('下发成功')
+          }
+        },
+        submit(){
+          vue.map.clearInfoWindow();
+          this.$message.success('下发成功')
+        }
+      }
+  })
+  return new Component().$mount()
+}
+
+
 
  export {
     TrafficEventsComponent,
     RoadDeviceComponent,
-    HitchComponent
+    HitchComponent,
+    pubSceneComponent
  }

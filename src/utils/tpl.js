@@ -119,7 +119,7 @@ function mecInfoWindow() {
             <div style='${close}' @click="closeWindow"></div>
             <div style='${form}' v-if="currentData">
                 <div style='${item}'>
-                    <div>时间：</div>
+                    <div>时&#12288;&#12288;间：</div>
                     <input style='${text}' type="text" :value="currentData.time"/>
                 </div>
                 <div style='${item}'>
@@ -157,7 +157,7 @@ function mecInfoWindow() {
                <div v-for="(item,ind) in dataList" style="${p}" :key="ind" @click="changePage(ind)">{{ind + 1}}</div>
             </div>
             <div style="${btn}">
-                <div style='${detail}'>详情{{id}}</div>
+                <div style='${detail}'>详情</div>
                 <div style='${submit}' @click="submit()">提交</div>
             </div>
         </div>
@@ -178,6 +178,7 @@ function trafficEventsWindow() {
        background:url(${require('../assets/img/sgcl.png')}) no-repeat center center;
        background-size:100% 100%;
        position:relative;
+       text-align:left;
     `
 
     var iStyle = `
@@ -399,8 +400,8 @@ function roadDeviceWindow() {
        width:30px;
        height:30px;
        position:absolute;
-       right:-15px;
-       top:-15px;
+       right:-30px;
+       top:-30px;
        background:url(${require('../assets/img/close.png')}) no-repeat center center;
        background-size:100% 100%;
     `
@@ -430,8 +431,138 @@ function roadDeviceWindow() {
     return html;
 }
 
+//下发场景
+function pubSceneWindow(title) {
+
+    var style = `
+       width:623px;
+       height:378px;
+       padding:30px 20px;
+       color:#fff;
+       font-size:16px;
+       background:url(${require('../assets/img/mec.png')}) no-repeat center center;
+       background-size:100% 100%;
+       position:relative;
+    `
+    //style
+    var iStyle = `
+       font-weight:bold;
+       line-height:50px;
+    `
+
+    var checkbox = `
+        width:33%;
+        line-height:20px;
+        display:flex;
+        color:#fff;
+        font-size:16px;
+        margin-bottom:15px;
+        letter-spacing:2px;
+    `
+    var check = `
+        width:20px;
+        height:20px;
+        border:2px solid #fff;
+        box-sizing:border-box;
+        background:#46474b;
+        border-radius:50%;
+        margin-right:8px;
+        position: relative;
+    `
+    var btn = `
+       display:flex;
+       padding-left:360px;
+       margin-top:15px;
+    `
+    var detail = `
+       width:100px;
+       height:32px;
+       line-height:32px;
+       border:1px solid  #fff;
+       border-radius:16px;
+       background:#4c5966;
+       text-align:center;
+    `
+    var submit = `
+       width:100px;
+       height:32px;
+       line-height:32px;
+       border:1px solid  #fff;
+       border-radius:16px;
+       background:#32c5ff;
+       text-align:center;
+       margin-left:20px;
+    `
+    var dot = `
+       width:10px;
+       height:10px;
+       background:#fff;
+       border-radius:50%;
+       position:absolute;
+       left:50%;
+       top:50%;
+       transform:translate(-50%,-50%);
+    `
+
+    var label = `
+       padding:3px 5px;
+       background:#544c53;
+       margin-right:10px;
+       border-radius:3px;
+    `
+    var close = `
+       width:30px;
+       height:30px;
+       position:absolute;
+       right:-15px;
+       top:-15px;
+       background:url(${require('../assets/img/close.png')}) no-repeat center center;
+       background-size:100% 100%;
+    `
+    
+    var html = `
+        <div style="${style}">
+            <div style='${close}' @click="closeWindow"></div>
+            <div style='${iStyle}'>${title}</div>
+            <div v-if="step == 2" style="display:flex;flex-wrap:wrap;margin-bottom:20px">
+                <div v-for="(item,index) in checkList" :key="index" style="${label}">
+                    {{item}}
+                </div>
+            </div>
+            <div v-if="step == 2" style="margin-bottom:15px">场景类型</div>
+            <div v-if="step == 1" style="display:flex;flex-wrap:wrap">
+                <div v-for="(item,index) in mecList" :key="index" style='${checkbox}' @click="check(item)">
+                    <div style='${check}'>
+                      <div v-if="item.checked"  style='${dot}'></div>
+                    </div>
+                    {{item.name}}
+                </div>
+            </div>
+            <div v-else style="display:flex;flex-wrap:wrap">
+                <div v-for="(item,index) in w" :key="index" style='${checkbox}' @click="check(item)">
+                    <div style='${check}'>
+                    <div v-if="item.checked"  style='${dot}'></div>
+                    </div>
+                    {{item.name}}
+                </div>
+            </div>
+            <div v-if="step==1" style="${btn}">
+                <div style='${detail}' @click="closeWindow">取消</div>
+                <div style='${submit}' @click="step = 2">下一步</div>
+            </div>
+            <div v-else style="${btn}">
+                <div style='${detail}' @click="step = 1">上一步</div>
+                <div style='${submit}' @click="submit">下发场景</div>
+            </div>
+        </div>
+    `
+    
+    return html;
+}
+
 export {
     mecInfoWindow,
     trafficEventsWindow,
-    roadDeviceWindow
+    roadDeviceWindow,
+    pubSceneWindow
 }

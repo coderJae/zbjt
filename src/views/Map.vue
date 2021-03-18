@@ -75,10 +75,11 @@
 // @ is an alias to /src
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
 import { renderMask, addMarker, drawWave, searchRoad, drawRoad }  from '@/utils/util'
-import {  TrafficEventsComponent, RoadDeviceComponent, HitchComponent } from '@/utils/comp'
+import {  TrafficEventsComponent, RoadDeviceComponent, HitchComponent, pubSceneComponent } from '@/utils/comp'
 
 var customLayer = null
 var mecLayer = null
+var sceneLayer = null
 var waveLayers = []
 
 export default {
@@ -238,6 +239,79 @@ export default {
                 question:'离线',
                 id:1
           }],
+          mecList:[
+            {
+              name:'mec001',
+              checked:true
+            },
+            {
+              name:'mec002',
+              checked:false
+            },
+            {
+              name:'mec003',
+              checked:true
+            },
+          {
+              name:'mec004',
+              checked:false
+            },
+            {
+              name:'mec005',
+              checked:false
+            },
+            {
+              name:'mec006',
+              checked:false
+            },
+            {
+              name:'mec007',
+              checked:false
+            },
+            {
+              name:'mec008',
+              checked:false
+            },
+            {
+              name:'mec009',
+              checked:false
+            },
+          {
+              name:'mec010',
+              checked:false
+            },
+            {
+              name:'mec011',
+              checked:false
+            },
+            {
+              name:'mec012',
+              checked:false
+            }, {
+              name:'mec013',
+              checked:false
+            },
+            {
+              name:'mec014',
+              checked:false
+            },
+            {
+              name:'mec015',
+              checked:false
+            },
+          {
+              name:'mec016',
+              checked:false
+            },
+            {
+              name:'mec017',
+              checked:false
+            },
+            {
+              name:'mec018',
+              checked:false
+            }
+          ],
           trafficEventsData:[
             { 
               name:'001',
@@ -347,6 +421,83 @@ export default {
                 status:'normal',
                 id:'019',
                 lnglat:[117.180299,36.62761]
+          }],
+          serviceSceneData:[{
+                status:'normal',
+                id:'001',
+                lnglat:[117.204428,36.803643]
+            },{
+                status:'normal',
+                id:'002',
+                lnglat:[117.203398,36.791134]
+            },{
+                status:'normal',
+                id:'003',
+                lnglat:[117.204428,36.780823]
+            },{
+                status:'normal',
+                id:'004',
+                lnglat:[117.199965,36.768998]
+            },{
+                status:'normal',
+                id:'005',
+                lnglat:[117.202368,36.756621]
+            },{
+                status:'normal',
+                id:'006',
+                lnglat:[117.207003,36.74493]
+            },{
+                status:'normal',
+                id:'007',
+                lnglat:[117.209406,36.733925]
+            },{
+                status:'normal',
+                id:'008',
+                lnglat:[117.211638,36.722092]
+            },{
+                status:'normal',
+                id:'009',
+                lnglat:[117.210265,36.71163]
+            },{
+                status:'normal',
+                id:'010',
+                lnglat:[117.211638,36.690577]
+            },{
+                status:'normal',
+                id:'011',
+                lnglat:[117.212668,36.683143]
+            },{
+                status:'normal',
+                id:'012',
+                lnglat:[117.212067,36.673145]
+            },{
+                status:'normal',
+                id:'013',
+                lnglat:[117.210093,36.666226]
+            },{
+                status:'normal',
+                id:'014',
+                lnglat:[117.207003,36.658446]
+            },{
+                status:'normal',
+                id:'015',
+                lnglat:[117.204342,36.651767]
+            },{
+                status:'normal',
+                id:'016',
+                lnglat:[117.19945,36.644674]
+            },{
+                status:'normal',
+                id:'017',
+                lnglat:[117.194815,36.639509]
+            },{
+                status:'normal',
+                id:'018',
+                lnglat:[117.188378,36.633448]
+            },{
+                status:'normal',
+                id:'019',
+                lnglat:[117.180299,36.62761]
           }]
       }
   },
@@ -365,8 +516,12 @@ export default {
            case 1:
              this.trafficEvents()
              break;
-          case  2:
-            this.abnormalAlarm()
+           case  2:
+             this.abnormalAlarm()
+             break;
+           case 3:
+             this.serviceScene()
+             break;
            default:
              break;
         }
@@ -396,8 +551,9 @@ export default {
         this.map.add(mecLayer)
     },
     /*服务场景*/
-    carNetwork(){
-      
+    serviceScene(){
+        sceneLayer = new AMap.OverlayGroup(addMarker(this.map,this.serviceSceneData,-95));
+        this.map.add(sceneLayer)
     },
     initMouseTool(){
         this.canDraw = !this.canDraw
@@ -449,9 +605,6 @@ export default {
     }
   },
   created(){
-     //交通运行
-     
-
      //交通事件
      let tec = TrafficEventsComponent(this)
       
@@ -467,7 +620,14 @@ export default {
         d.component = mec
         d.img = d.status == 'normal' ? 'mec_normal' : 'mec_error'
      })
+
+    //服务场景
+     let scene = pubSceneComponent(this,this.mecList)
      
+     this.serviceSceneData.forEach( (d,i) => {
+        d.component = scene
+        d.img = d.status == 'normal' ? 'mec_normal' : 'mec_error'
+     })
   },
   mounted(){
          lazyAMapApiLoaderInstance.load().then(() => {
